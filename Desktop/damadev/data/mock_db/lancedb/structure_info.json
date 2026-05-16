@@ -1,0 +1,18 @@
+{
+  "tables": {
+    "manga_index": [
+      "panel_id",
+      "image_uri",
+      "vector",
+      "description",
+      "top_10_sutta_matches",
+      "matched_sutta_id"
+    ],
+    "sutta_index": [
+      "sutta_id",
+      "vector",
+      "metadata"
+    ]
+  },
+  "status": "ready_for_lance_initialization"
+}

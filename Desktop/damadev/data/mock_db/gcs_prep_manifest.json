@@ -1,0 +1,24 @@
+{
+  "buckets": [
+    {
+      "name": "dama-corpus",
+      "purpose": "Sealed Sutta Data (JSON/MP3)"
+    },
+    {
+      "name": "dama-images",
+      "purpose": "Manga Panels and Assets"
+    },
+    {
+      "name": "dama-logs",
+      "purpose": "Pipeline Execution Logs"
+    }
+  ],
+  "prefix_structure": "hdb/nikaya={nikaya}/book={book}/sutta={sutta_id}/run={run_id}/",
+  "required_files": [
+    "manifest.json",
+    "sutta.json",
+    "audio.json",
+    "segments.json",
+    "images.json"
+  ]
+}

@@ -1,0 +1,40 @@
+# Node
+node_modules/
+dist/
+.tanstack/
+.vinxi/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.uv/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Data (Ignore all real suttas/audio/transcripts)
+validated-json/
+aud/
+data/
+!data/mock_db/
+!data/examples/
+
+# Databases & Temp
+*.sqlite3
+tmp/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+repogrok-output.xml
