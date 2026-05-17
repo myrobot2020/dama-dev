@@ -26,6 +26,9 @@ data/
 !data/mock_db/
 !data/examples/
 
+# Secrets
+factory-bot-key.json
+
 # Databases & Temp
 *.sqlite3
 tmp/
