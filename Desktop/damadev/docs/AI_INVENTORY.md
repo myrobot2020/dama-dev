@@ -9,11 +9,19 @@ This table tracks the current models, prompts, and scripts used in the Dama pipe
 | **Segmentation** | `04_segment_split.py` | Regex (LLM soon) | N/A | Legacy | Moving to LLM for longer suttas (Issue #2). |
 | **Comm. Segment** | `05_segment_commentary.py` | Regex (LLM soon) | N/A | Legacy | Identifying teacher-aligned commentary. |
 | **Translation** | `16_translate_ja.py` | (Drafting) | `trans-ja-v1` | Planning | Japanese translation layer. |
-| **Image Match** | (Drafting) | `gpt-4o-mini` | `img-match-v1` | Research | Mapping manga panels to sutta segments. |
+| **Manga Narrative**| `describe_volume.py` | `llava` + `qwen` | `manga-v2.4` (Seed) | **GOLD** | Central: `gs://damaprompts-492316/library/damamangapromptbook.md` |
+| **Chat Response** | `an1_app.py` | `gemini-1.5-flash` | `chat-v1.0.0` | **Active** | Central: `gs://damaprompts-492316/library/damachatpromptbook.md` |
 | **Embeddings** | (Drafting) | `text-embedding-3-small`| N/A | Planning | Generating vectors for LanceDB. |
 
-## Version History & Changes
+## Central Prompt Library (`damaprompts`)
+The other repositories have updated the master library in GCS.
 
-*   **2024-05-20**: Initial inventory created.
-*   **Next Action**: Extract hardcoded prompts from `19_generate_quiz.py` into a versioned library.
-*   **Next Action**: Update `04_segment_split.py` to use `qwen2.5` or `gpt-4o` for structural parsing.
+### Manga Evolution (`damamanga`)
+*   **v1.0**: Literal baseline (Deprecated).
+*   **v2.1**: Psychological deep-dive (Deprecated).
+*   **v2.3**: Narrative rebel (Retired).
+*   **v2.4**: **Seed-Injection** (Current Gold Standard). Uses random "Opening Seeds" to break robot patterns.
+
+### Chat Intelligence (`damachat`)
+*   **v1.0.0**: Strict Citation Guard for `(AN ...)` vs `(cAN ...)`.
+*   **Grounding**: "No source segment, no sealed generated claim."

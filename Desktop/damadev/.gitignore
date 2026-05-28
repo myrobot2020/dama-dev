@@ -26,8 +26,18 @@ data/
 !data/mock_db/
 !data/examples/
 
+# Codex iterations (ignore data but keep scripts)
+codex/codex*/*
+!codex/codex*/*.py
+!codex/codex*/README.md
+codex/assets/
+codex/**/assets/
+
 # Secrets
 factory-bot-key.json
+codex/apikeys.txt
+codex/aaaapikey.txt
+**/apikeys.txt
 
 # Databases & Temp
 *.sqlite3

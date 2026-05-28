@@ -20,6 +20,13 @@ This registry defines the authoritative data stores for the Dama project. Use th
 | **damalance** | LanceDB | `data/mock_db/lancedb/` | **Factory VDB**: Local fast matching of Manga to Suttas. |
 | **damaevents** | SQLite | `data/work/streaming/pipeline.sqlite3` | **Operational Brain**: Pipeline job state and event logs. |
 
+## Pipeline Logic & Prompts
+| Name | Type | Path / Location | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Prompt Book** | Python | `codex/prompts.py` | **Central Prompts**: All AI system prompts and segmentation regex rules. |
+| **Sutta Mapping** | JSON | `codex/codex2/*.json` | **Mapping State**: Current mapping of teacher IDs to SuttaCentral UIDs. |
+| **GCS Prompts** | Cloud | `gs://damaprompts-dama-492316` | **Prompt Backup**: Mirrored and versioned prompts for cloud deployments. |
+
 ## Authentication
 - **Service Account**: `dama-factory-bot@dama-492316.iam.gserviceaccount.com`
 - **Key File**: `factory-bot-key.json` (Required for GCS write access).
