@@ -1,0 +1,98 @@
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - raw_id: ${args.sutta_id}
+          - data_api: "https://dama-data-api-114671678540.asia-south1.run.app"
+    - sanitize_id:
+        assign:
+          - parts: ${text.split(raw_id, "/")}
+          - parts_len: ${len(parts)}
+          - sutta_id: ${raw_id}
+    - check_parts:
+        switch:
+          - condition: ${parts_len > 1}
+            next: parse_from_parts
+        next: check_prefix
+    - parse_from_parts:
+        switch:
+          - condition: ${parts_len >= 4}
+            next: assign_parts_3
+        next: assign_parts_last
+    - assign_parts_3:
+        assign:
+          - sutta_id: ${parts[3]}
+        next: check_prefix
+    - assign_parts_last:
+        assign:
+          - sutta_id: ${parts[parts_len - 1]}
+        next: check_prefix
+    - check_prefix:
+        switch:
+          - condition: ${len(sutta_id) > 2 and (text.substring(sutta_id, 0, 2) == "an" or text.substring(sutta_id, 0, 2) == "AN")}
+            assign:
+              - sutta_id: ${text.substring(sutta_id, 2, len(sutta_id))}
+        next: get_platinum_data
+    - get_platinum_data:
+        call: http.get
+        args:
+          url: ${data_api + "/api/item/" + sutta_id}
+          auth:
+            type: OIDC
+        result: sutta_detail
+    - translate_step:
+        call: http.post
+        args:
+          url: https://us-central1-dama-492316.cloudfunctions.net/translate-agent
+          body:
+            sutta_id: ${sutta_id}
+            sutta: ${sutta_detail.body.sutta}
+            target_lang: "zh"
+          auth:
+            type: OIDC
+        result: trans_res
+    - dub_step:
+        call: http.post
+        args:
+          url: https://us-central1-dama-492316.cloudfunctions.net/dub-agent
+          body:
+            sutta_id: ${sutta_id + "_zh"}
+            text: ${trans_res.body.translated_text}
+            bucket: "dama-492316-an-data-9690"
+          auth:
+            type: OIDC
+        result: dub_res
+    - image_match_step:
+        call: http.post
+        args:
+          url: ${data_api + "/api/image_match"}
+          body:
+            sutta_id: ${sutta_id}
+            bucket: "cleaned-images-dama-492316"
+          auth:
+            type: OIDC
+        result: image_res
+    - publish_to_prod:
+        call: http.post
+        args:
+          url: ${data_api + "/api/item/publish"}
+          body:
+            sutta_id: ${sutta_id}
+            image_url: ${image_res.body.image_url}
+            audio_url: ${sutta_detail.body.audio_url}
+            zh_audio_url: ${dub_res.body.audio_url}
+            panel_name: ${image_res.body.panel_name}
+            translated_text: ${trans_res.body.translated_text}
+          auth:
+            type: OIDC
+        result: publish_res
+    - final_output:
+        return:
+          sutta_id: ${sutta_id}
+          status: "SUCCESSFULLY PUBLISHED"
+          translated_text: ${trans_res.body.translated_text}
+          image_url: ${image_res.body.image_url}
+          audio_url: ${sutta_detail.body.audio_url}
+          zh_audio_url: ${dub_res.body.audio_url}
+          publish_details: ${publish_res.body}
